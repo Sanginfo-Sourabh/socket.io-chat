@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ChatJS</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body>
+    <div id="history"></div>
+    <form id="chat">
+        <input type="text" id="msg_text" name="msg_text" />
+        <input type="submit" value="Send!" />
+    </form>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://192.168.0.92:9000');
+        $("form#chat").submit(function(e) {
+            e.preventDefault();
+            var responder = 'Main User : '+$(this).find("#msg_text").val();
+            socket.emit("send message", responder , function() {
+                $("form#chat #msg_text").val("");
+            });
+        });
+
+    		socket.on("update messages", function(msg){
+    		var final_message = $("<p />").text(msg);
+    		   $("#history").append(final_message);
+    		});
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+    </script>
+</body>
+
+</html>
