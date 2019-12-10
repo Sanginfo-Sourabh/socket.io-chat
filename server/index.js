@@ -9,10 +9,7 @@ var public_channel = "channel_public";
 
 io.on('connection', function(socket){
   socket.on(public_channel, function(message){
-    console.log(message);
-    // var message = JSON.parse(msg);
     if (message.to && message.from) {
-      console.log("Sending message from "+ message.from + " to " + message.to);
       io.emit("channel_" + message.to, message);
     }
   });

@@ -1,4 +1,4 @@
-var socket = io.connect('http://192.168.0.92:9000');
+var socket = io.connect('http://192.168.0.94:9000');
 
 // login serves are your credential
 // People can send you messages with @login
@@ -36,7 +36,7 @@ $('form').submit(function() {
       type: "text_message",
     }
     sendMessage(message);
-    $('#messages').append($('<li>').text("You" + ": " + text_message));
+    $('#messages').append($('<li>').text("Admin - "+ recipient +": "+ text_message));
     $('#m').val('').trigger('input');
   }
   return false;
@@ -88,8 +88,9 @@ function processIncomingMessage(msg) {
   var sender = msg.from;
   if (msg.type == "text_message")
   {
-    var message = msg.message;
-    $('#messages').append($('<li>').text(sender + ": " + message));
+    var message = '<li style="color:red;text-transform:uppercase"><b>'+msg.message+'</b></li>';
+    $('#messages').append(message);
+    //$('#messages').append($('<li>').text(sender + ": " + message));
   }
   else if (msg.type == "typing")
   {
